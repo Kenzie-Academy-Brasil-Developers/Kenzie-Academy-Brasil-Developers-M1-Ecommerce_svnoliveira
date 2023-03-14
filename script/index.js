@@ -1,3 +1,4 @@
+//list and search section
 const itemsList = [];
 
 function fillItemListWithData(){
@@ -8,10 +9,27 @@ function fillItemListWithData(){
 }
 fillItemListWithData();
 
-//capture UL
-let mainCardBox = document.querySelector('.mainCardsBox');
+let filteredItems = [];
+
+function filterItems(category){
+    filteredItems = [];
+    if (category == "Todos"){
+        filteredItems = itemsList;
+        return filteredItems;
+    }
+    for (let i = 0; i < itemsList.length; i++) {
+        const item = itemsList[i];
+        if(item.tag[0] == category){
+            filteredItems.push(item);
+        }
+    }
+    return filteredItems;
+}
+
+// card renderer
 
 function renderItemCards(list){
+    let mainCardBox = document.querySelector('.mainCardsBox');
     for (let i = 0; i < list.length; i++) {
         const product = list[i];
         
@@ -55,3 +73,64 @@ function renderItemCards(list){
     }
 }
 renderItemCards(itemsList);
+
+function cleanCards(){
+    let liBox = document.querySelectorAll('.liBox');
+    for (let i = 0; i < liBox.length; i++) {
+        liBox[i].remove();
+    }
+}
+
+//display clicking the navigation bar
+let buttonList = document.querySelectorAll(".menu-button");
+for (let i = 0; i < buttonList.length; i++) {
+    buttonList[i].addEventListener("click", function(){
+        const buttonListClicked = buttonList[i];
+        const buttonContent = buttonListClicked.innerText;
+        cleanCards();
+        filterItems(buttonContent);
+        renderItemCards(filteredItems);
+    });
+}
+
+//display based on search
+let inputTag = document.querySelector('.search-input');
+let userInput = "";
+inputTag.addEventListener("input", (event) => {
+userInput = event.target.value;
+});
+
+function standardizeWord(string) {
+    let word = string.toUpperCase();
+    let newWord = "";
+    for (let i = 0; i < word.length; i++) {
+        let character = word[i];
+        if(character == ' ') {
+            character = '';
+        }
+        newWord += character;
+    }
+    return newWord;
+}
+
+let clickingSearch = document.querySelector(".search-button");
+clickingSearch.addEventListener("click", function() {
+    filteredItems = [];
+    termForSearch = standardizeWord(userInput);
+    for (let i = 0; i < itemsList.length; i++) {
+        const itemName = standardizeWord(itemsList[i].nameItem);
+        if (itemName.includes(termForSearch)){
+            filteredItems.push(itemsList[i]);
+        }
+    }
+    cleanCards();
+    renderItemCards(filteredItems);
+});
+inputTag.addEventListener("keypress", function(event) {    // Search pressing "Enter" in the input prompt. from this example => https://www.w3schools.com/howto/howto_js_trigger_button_enter.asp
+    if (event.key === "Enter") {
+        event.preventDefault();
+        clickingSearch.click();
+    }
+});
+
+//render items on the shopping cart
