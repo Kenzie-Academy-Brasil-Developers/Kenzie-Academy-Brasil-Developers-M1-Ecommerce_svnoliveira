@@ -134,3 +134,90 @@ inputTag.addEventListener("keypress", function(event) {    // Search pressing "E
 });
 
 //render items on the shopping cart
+let cartItemCounter = 0;
+let cartItemPrice = 0;
+let addToCartButtonList = document.querySelectorAll('.addButton');
+let removeFromCartButtonList = [];
+for (let i = 0; i < addToCartButtonList.length; i++) {
+    let clicked = addToCartButtonList[i];
+    clicked.addEventListener("click", function(){
+        empty = document.querySelectorAll(".empty");
+        empty[0].classList.add('hidden');
+        empty[1].classList.add('hidden');
+        document.querySelector('.cart-details').style.visibility = 'visible';
+        document.querySelector('.cart-empty').style.justifyContent = 'flex-start';
+        document.querySelector('.cart-empty').style.overflowY = 'scroll';
+
+        //create
+        let miniDiv = document.createElement('div');
+        let miniImage = document.createElement('img');
+        let miniTextBox = document.createElement('ul');
+        let miniItemName = document.createElement('li');
+        let miniItemPrice = document.createElement('li');
+        let removeButton = document.createElement('li');
+
+        //add class
+        miniDiv.classList.add('miniDiv');
+        miniImage.classList.add('miniImage');
+        miniTextBox.classList.add('miniTextBox');
+        miniItemName.classList.add('miniItemName');
+        miniItemPrice.classList.add('miniItemPrice');
+        removeButton.classList.add('removeButton');
+
+        //get list
+        let currentItem;
+        if (filteredItems.length < 1) {
+            currentItem = itemsList[i];
+        } else {
+            currentItem = filteredItems[i];
+        }
+
+        //add text
+        miniImage.src = currentItem.img;
+        miniImage.alt = `Thumbnail of ${currentItem.nameItem}`;
+        miniItemName.innerText = currentItem.nameItem;
+        miniItemPrice.innerText = `R$ ${currentItem.value.toFixed(2)}`;
+        removeButton.innerText = `Remover Produto`;
+
+        //append tags
+        document.querySelector('.cart-empty').appendChild(miniDiv);
+        miniDiv.appendChild(miniImage);
+        miniDiv.appendChild(miniTextBox);
+        miniTextBox.appendChild(miniItemName);
+        miniTextBox.appendChild(miniItemPrice);
+        miniTextBox.appendChild(removeButton);
+
+        //save price and ammount
+        cartItemCounter++;
+        cartItemPrice += currentItem.value;
+        
+        updateDisplay();
+        giveButtonsListener(`${currentItem.value}`)
+    })
+}
+
+//update display
+function updateDisplay(){
+    document.querySelector('#ammount').innerText = cartItemCounter;
+    document.querySelector('#price').innerText = `R$ ${cartItemPrice.toFixed(2)}`;
+    removeFromCartButtonList = document.querySelectorAll('.removeButton');
+}
+
+//add listener to the remove product button fucntion
+function giveButtonsListener(price){
+    let button = removeFromCartButtonList[removeFromCartButtonList.length-1];
+    button.addEventListener("click", function(){
+        cartItemCounter --;
+        cartItemPrice -= price;
+        button.parentNode.parentNode.remove();
+        updateDisplay();
+        if (removeFromCartButtonList.length < 1){
+            empty = document.querySelectorAll(".empty");
+            empty[0].classList.remove('hidden');
+            empty[1].classList.remove('hidden');
+            document.querySelector('.cart-details').style.visibility = 'hidden';
+            document.querySelector('.cart-empty').style.justifyContent = 'center';
+            document.querySelector('.cart-empty').style.overflowY = 'hidden';
+        }
+    })
+}

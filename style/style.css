@@ -86,6 +86,10 @@ main {
   color: #ffffff;
 }
 
+.search-button:hover {
+  cursor: pointer;
+}
+
 .main-details aside {
   width: 100%;
   height: 80%;
@@ -141,6 +145,10 @@ main {
 }
 
 /* //my styles */
+
+.hidden {
+  display: none;
+}
 
 main .main-cards .mainCardsBox {
   display: flex;
@@ -225,6 +233,60 @@ main .main-cards .mainCardsBox .liBox .textBox .addButton{
 }
 
 main .main-cards .mainCardsBox .liBox .textBox .addButton:hover{
+  color: #2E245E;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+main aside .cart-empty {
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+main aside .cart-empty .miniDiv{
+  min-height: 12vh;
+  min-width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  justify-content: space-around;
+}
+
+main aside .cart-empty .miniImage{
+  min-height: 100%;
+  min-width: 30%;
+  max-height: 100%;
+  max-width: 30%;
+  background-color: white;
+  object-fit: cover;
+}
+
+main aside .cart-empty .miniTextBox{
+  height: 100%;
+  width: 55%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+main aside .cart-empty .miniTextBox .miniItemName{
+  font-size: 16px;
+  font-weight: bold;
+}
+
+main aside .cart-empty .miniTextBox .miniItemPrice{
+  font-size: 14px;
+  font-weight: bold;
+  color: #2E245E;
+}
+
+main aside .cart-empty .miniTextBox .removeButton{
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0px;
+}
+
+main aside .cart-empty .miniTextBox .removeButton:hover{
   color: #2E245E;
   text-decoration: underline;
   cursor: pointer;
