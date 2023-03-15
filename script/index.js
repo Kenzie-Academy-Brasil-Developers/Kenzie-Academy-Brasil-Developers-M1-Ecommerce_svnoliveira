@@ -90,6 +90,8 @@ for (let i = 0; i < buttonList.length; i++) {
         cleanCards();
         filterItems(buttonContent);
         renderItemCards(filteredItems);
+        addToCartButtonList = document.querySelectorAll('.addButton');
+        renderShoppingCart();
     });
 }
 
@@ -125,6 +127,8 @@ clickingSearch.addEventListener("click", function() {
     }
     cleanCards();
     renderItemCards(filteredItems);
+    addToCartButtonList = document.querySelectorAll('.addButton');
+    renderShoppingCart();
 });
 inputTag.addEventListener("keypress", function(event) {    // Search pressing "Enter" in the input prompt. from this example => https://www.w3schools.com/howto/howto_js_trigger_button_enter.asp
     if (event.key === "Enter") {
@@ -138,63 +142,66 @@ let cartItemCounter = 0;
 let cartItemPrice = 0;
 let addToCartButtonList = document.querySelectorAll('.addButton');
 let removeFromCartButtonList = [];
-for (let i = 0; i < addToCartButtonList.length; i++) {
-    let clicked = addToCartButtonList[i];
-    clicked.addEventListener("click", function(){
-        empty = document.querySelectorAll(".empty");
-        empty[0].classList.add('hidden');
-        empty[1].classList.add('hidden');
-        document.querySelector('.cart-details').style.visibility = 'visible';
-        document.querySelector('.cart-empty').style.justifyContent = 'flex-start';
-        document.querySelector('.cart-empty').style.overflowY = 'scroll';
-
-        //create
-        let miniDiv = document.createElement('div');
-        let miniImage = document.createElement('img');
-        let miniTextBox = document.createElement('ul');
-        let miniItemName = document.createElement('li');
-        let miniItemPrice = document.createElement('li');
-        let removeButton = document.createElement('li');
-
-        //add class
-        miniDiv.classList.add('miniDiv');
-        miniImage.classList.add('miniImage');
-        miniTextBox.classList.add('miniTextBox');
-        miniItemName.classList.add('miniItemName');
-        miniItemPrice.classList.add('miniItemPrice');
-        removeButton.classList.add('removeButton');
-
-        //get list
-        let currentItem;
-        if (filteredItems.length < 1) {
-            currentItem = itemsList[i];
-        } else {
-            currentItem = filteredItems[i];
-        }
-
-        //add text
-        miniImage.src = currentItem.img;
-        miniImage.alt = `Thumbnail of ${currentItem.nameItem}`;
-        miniItemName.innerText = currentItem.nameItem;
-        miniItemPrice.innerText = `R$ ${currentItem.value.toFixed(2)}`;
-        removeButton.innerText = `Remover Produto`;
-
-        //append tags
-        document.querySelector('.cart-empty').appendChild(miniDiv);
-        miniDiv.appendChild(miniImage);
-        miniDiv.appendChild(miniTextBox);
-        miniTextBox.appendChild(miniItemName);
-        miniTextBox.appendChild(miniItemPrice);
-        miniTextBox.appendChild(removeButton);
-
-        //save price and ammount
-        cartItemCounter++;
-        cartItemPrice += currentItem.value;
-        
-        updateDisplay();
-        giveButtonsListener(`${currentItem.value}`)
-    })
+function renderShoppingCart(){
+    for (let i = 0; i < addToCartButtonList.length; i++) {
+        let clicked = addToCartButtonList[i];
+        clicked.addEventListener("click", function(){
+            empty = document.querySelectorAll(".empty");
+            empty[0].classList.add('hidden');
+            empty[1].classList.add('hidden');
+            document.querySelector('.cart-details').style.visibility = 'visible';
+            document.querySelector('.cart-empty').style.justifyContent = 'flex-start';
+            document.querySelector('.cart-empty').style.overflowY = 'scroll';
+    
+            //create
+            let miniDiv = document.createElement('div');
+            let miniImage = document.createElement('img');
+            let miniTextBox = document.createElement('ul');
+            let miniItemName = document.createElement('li');
+            let miniItemPrice = document.createElement('li');
+            let removeButton = document.createElement('li');
+    
+            //add class
+            miniDiv.classList.add('miniDiv');
+            miniImage.classList.add('miniImage');
+            miniTextBox.classList.add('miniTextBox');
+            miniItemName.classList.add('miniItemName');
+            miniItemPrice.classList.add('miniItemPrice');
+            removeButton.classList.add('removeButton');
+    
+            //get list
+            let currentItem;
+            if (filteredItems.length < 1) {
+                currentItem = itemsList[i];
+            } else {
+                currentItem = filteredItems[i];
+            }
+    
+            //add text
+            miniImage.src = currentItem.img;
+            miniImage.alt = `Thumbnail of ${currentItem.nameItem}`;
+            miniItemName.innerText = currentItem.nameItem;
+            miniItemPrice.innerText = `R$ ${currentItem.value.toFixed(2)}`;
+            removeButton.innerText = `Remover Produto`;
+    
+            //append tags
+            document.querySelector('.cart-empty').appendChild(miniDiv);
+            miniDiv.appendChild(miniImage);
+            miniDiv.appendChild(miniTextBox);
+            miniTextBox.appendChild(miniItemName);
+            miniTextBox.appendChild(miniItemPrice);
+            miniTextBox.appendChild(removeButton);
+    
+            //save price and ammount
+            cartItemCounter++;
+            cartItemPrice += currentItem.value;
+            
+            updateDisplay();
+            giveButtonsListener(`${currentItem.value}`)
+        })
+    }
 }
+renderShoppingCart();
 
 //update display
 function updateDisplay(){
